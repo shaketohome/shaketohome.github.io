@@ -3,93 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShakeToHome - Bhupalpally</title>
+<title>ShakeToHome Bhupalpally</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <h1>🥤 ShakeToHome</h1>
-  <span>Bhupalpally</span>
-</nav>
+<!-- HEADER -->
+<header>
+  <h1>ShakeToHome</h1>
+  <p>Bhupalpally</p>
+</header>
 
-<!-- HERO -->
-<section class="hero">
-  <h2>Fresh Shakes Delivered Fast 🚀</h2>
-  <p>Order your favorite drinks instantly</p>
-</section>
-
-<!-- PRODUCTS -->
+<!-- PRODUCT LIST -->
 <section class="products">
 
-<h2>Milkshakes</h2>
+  <!-- MILKSHAKES -->
+  <h2>Milkshakes</h2>
 
-<div class="grid">
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1586917049334-2f3d1c77d5b1" />
+    <div class="info">
+      <h3>Oreo Shake</h3>
+      <p>₹120</p>
+      <button onclick="order('Oreo Shake')">Order</button>
+    </div>
+  </div>
 
-<div class="card">
-<img src="images/oreo.jpg">
-<h3>Oreo Shake</h3>
-<p>₹120</p>
-<button onclick="orderItem('Oreo Shake')">Add</button>
-</div>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f" />
+    <div class="info">
+      <h3>KitKat Shake</h3>
+      <p>₹130</p>
+      <button onclick="order('KitKat Shake')">Order</button>
+    </div>
+  </div>
 
-<div class="card">
-<img src="images/kitkat.jpg">
-<h3>KitKat Shake</h3>
-<p>₹130</p>
-<button onclick="orderItem('KitKat Shake')">Add</button>
-</div>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1553531889-56cc480ac5cb" />
+    <div class="info">
+      <h3>Strawberry Shake</h3>
+      <p>₹110</p>
+      <button onclick="order('Strawberry Shake')">Order</button>
+    </div>
+  </div>
 
-<div class="card">
-<img src="images/strawberry.jpg">
-<h3>Strawberry Shake</h3>
-<p>₹110</p>
-<button onclick="orderItem('Strawberry Shake')">Add</button>
-</div>
+  <!-- LASSI -->
+  <h2>Lassi</h2>
 
-<div class="card">
-<img src="images/chocolate.jpg">
-<h3>Chocolate Shake</h3>
-<p>₹140</p>
-<button onclick="orderItem('Chocolate Shake')">Add</button>
-</div>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1604908176997-4314a3f54a3b" />
+    <div class="info">
+      <h3>Strawberry Lassi</h3>
+      <p>₹90</p>
+      <button onclick="order('Strawberry Lassi')">Order</button>
+    </div>
+  </div>
 
-</div>
+  <!-- JUICES -->
+  <h2>Juices</h2>
 
-<h2>Juices</h2>
-
-<div class="grid">
-
-<div class="card">
-<img src="images/watermelon.jpg">
-<h3>Watermelon Juice</h3>
-<p>₹80</p>
-<button onclick="orderItem('Watermelon Juice')">Add</button>
-</div>
-
-<div class="card">
-<img src="images/pineapple.jpg">
-<h3>Pineapple Juice</h3>
-<p>₹90</p>
-<button onclick="orderItem('Pineapple Juice')">Add</button>
-</div>
-
-</div>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888" />
+    <div class="info">
+      <h3>Watermelon Juice</h3>
+      <p>₹80</p>
+      <button onclick="order('Watermelon Juice')">Order</button>
+    </div>
+  </div>
 
 </section>
 
-<!-- CART BAR -->
-<div class="cart-bar" onclick="whatsappOrder()">
-  🛒 View Cart & Order
-</div>
+<!-- WHATSAPP BUTTON -->
+<a href="https://wa.me/917702622925" class="whatsapp" target="_blank">💬</a>
 
-<!-- FLOAT -->
+<!-- CALL BUTTON -->
 <a href="tel:+917702622925" class="call">📞</a>
-<a href="#" onclick="whatsappOrder()" class="whatsapp">💬</a>
 
 <script src="script.js"></script>
-
 </body>
 </html>
