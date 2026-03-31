@@ -1,3 +1,6 @@
+let cart = [];
+let userLocation = "";
+
 function getLocation() {
   if (!navigator.geolocation) {
     alert("Location not supported");
@@ -9,26 +12,55 @@ function getLocation() {
       let lat = pos.coords.latitude;
       let lon = pos.coords.longitude;
 
-      document.getElementById("locationInput").value = "Location set ✔";
+      userLocation = "https://maps.google.com/?q=" + lat + "," + lon;
 
-      window.userLocation =
-        "https://maps.google.com/?q=" + lat + "," + lon;
+      document.getElementById("locationInput").value =
+        "📍 Location set ✔";
     },
     () => {
-      alert("Allow location access");
+      alert("Please allow location");
     }
   );
 }
 
-function order(item) {
-  let msg = "Order: " + item;
+function addToCart(name, price) {
+  cart.push({ name, price });
 
-  if (window.userLocation) {
-    msg += " Location: " + window.userLocation;
+  document.getElementById("cartCount").innerText = cart.length;
+  document.getElementById("orderText").innerText =
+    cart.length + " items";
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert("Cart empty");
+    return;
+  }
+
+  let msg = "Order:%0A";
+  let total = 0;
+
+  cart.forEach((i) => {
+    msg += i.name + " ₹" + i.price + "%0A";
+    total += i.price;
+  });
+
+  msg += "%0ATotal ₹" + total;
+
+  if (userLocation) {
+    msg += "%0ALocation: " + userLocation;
   }
 
   window.open(
     "https://wa.me/917702622925?text=" +
       encodeURIComponent(msg)
   );
+}
+
+function openWhatsApp() {
+  window.open("https://wa.me/917702622925");
+}
+
+function toggleCart() {
+  alert("Cart items: " + cart.length);
 }
