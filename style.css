@@ -1,82 +1,109 @@
-/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: system-ui;
+}
+
+body {
+  background: #f5f5f5;
 }
 
 /* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
+  padding: 12px;
   background: #ff5200;
   color: white;
 }
 
-/* LOGO */
 .logo {
-  font-size: 18px;
   font-weight: bold;
 }
 
-/* RIGHT SIDE */
-.nav-right {
+.nav {
   display: flex;
   gap: 8px;
 }
 
-/* BUTTONS */
 .btn {
   padding: 8px 12px;
   border-radius: 20px;
   font-size: 12px;
-  text-decoration: none;
-  white-space: nowrap;
 }
 
-/* LIGHT BUTTON */
-.btn.light {
+.white {
   background: white;
   color: #ff5200;
 }
 
-/* DARK BUTTON */
-.btn.dark {
+.black {
   background: black;
   color: white;
-  border: none;
 }
 
 /* HERO */
 .hero {
   background: #ff5200;
-  color: white;
+  padding: 20px;
   text-align: center;
-  padding: 30px 15px;
+  color: white;
 }
 
-/* TITLE */
 .hero h1 {
-  font-size: 20px;
-  line-height: 1.4;
-  margin-bottom: 20px;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
-/* SEARCH AREA */
-.search-area {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* INPUTS */
-.search-area input {
+/* INPUT */
+.hero input {
   width: 100%;
   padding: 12px;
+  margin-bottom: 10px;
   border-radius: 25px;
   border: none;
-  font-size: 14px;
+}
+
+/* GRID FIX */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+/* CARD */
+.item {
+  background: white;
+  border-radius: 10px;
+  padding: 6px;
+  text-align: center;
+}
+
+/* IMAGE FIX */
+.item img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* TEXT */
+.item h3 {
+  font-size: 12px;
+}
+
+.item p {
+  font-weight: bold;
+}
+
+/* BUTTON */
+.item button {
+  width: 100%;
+  padding: 6px;
+  background: #ff5200;
+  color: white;
+  border: none;
+  border-radius: 20px;
 }
