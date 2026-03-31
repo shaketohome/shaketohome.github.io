@@ -11,114 +11,81 @@
 
 <!-- HEADER -->
 <header class="header">
+  <div class="logo">🥤 ShakeToHome</div>
 
-  <!-- LEFT LOGO -->
-  <div class="logo">
-    🥤 ShakeToHome
+  <div class="nav">
+    <a href="https://wa.me/917702622925" class="btn white">WhatsApp</a>
+    <button class="btn black">Cart</button>
   </div>
-
-  <!-- RIGHT BUTTONS -->
-  <div class="nav-right">
-    <a href="https://wa.me/917702622925" class="btn light">WhatsApp</a>
-    <button class="btn dark">Cart</button>
-  </div>
-
 </header>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
+  <h1>Order shakes & juices.<br>Discover best drinks.</h1>
 
-  <h1>
-    Order shakes & juices. Discover<br>
-    best drinks. ShakeToHome it!
-  </h1>
-
-  <div class="search-area">
-    <input id="locationInput" placeholder="📍 Enter your location">
-    <input placeholder="Search for shakes, juices...">
-  </div>
-
+  <input id="locationInput" placeholder="📍 Tap to allow location" onclick="getLocation()">
+  <input placeholder="Search shakes...">
 </section>
+
+<!-- GRID -->
 <section class="grid">
 
   <!-- 9 PRODUCTS -->
-  <!-- SAME BLOCK REPEATED -->
-
   <div class="item">
     <img src="https://images.unsplash.com/photo-1586917049334-2f3d1c77d5b1?auto=format&fit=crop&w=300&q=80">
-    <h3>Oreo Shake</h3>
-    <p>₹120</p>
-    <button onclick="addToCart('Oreo Shake',120)">Add</button>
+    <h3>Oreo</h3><p>₹120</p>
+    <button onclick="order('Oreo')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=300&q=80">
-    <h3>KitKat</h3>
-    <p>₹130</p>
-    <button onclick="addToCart('KitKat',130)">Add</button>
+    <h3>KitKat</h3><p>₹130</p>
+    <button onclick="order('KitKat')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1553531889-56cc480ac5cb?auto=format&fit=crop&w=300&q=80">
-    <h3>Strawberry</h3>
-    <p>₹110</p>
-    <button onclick="addToCart('Strawberry',110)">Add</button>
+    <h3>Strawberry</h3><p>₹110</p>
+    <button onclick="order('Strawberry')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=300&q=80">
-    <h3>Chocolate</h3>
-    <p>₹130</p>
-    <button onclick="addToCart('Chocolate',130)">Add</button>
+    <h3>Chocolate</h3><p>₹130</p>
+    <button onclick="order('Chocolate')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=300&q=80">
-    <h3>Lassi</h3>
-    <p>₹90</p>
-    <button onclick="addToCart('Lassi',90)">Add</button>
+    <h3>Lassi</h3><p>₹90</p>
+    <button onclick="order('Lassi')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=300&q=80">
-    <h3>Watermelon</h3>
-    <p>₹80</p>
-    <button onclick="addToCart('Watermelon',80)">Add</button>
+    <h3>Watermelon</h3><p>₹80</p>
+    <button onclick="order('Watermelon')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1589308078054-8322a5d53e21?auto=format&fit=crop&w=300&q=80">
-    <h3>Pineapple</h3>
-    <p>₹85</p>
-    <button onclick="addToCart('Pineapple',85)">Add</button>
+    <h3>Pineapple</h3><p>₹85</p>
+    <button onclick="order('Pineapple')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1572441710534-68054a6b6c8c?auto=format&fit=crop&w=300&q=80">
-    <h3>Grapes</h3>
-    <p>₹85</p>
-    <button onclick="addToCart('Grapes',85)">Add</button>
+    <h3>Grapes</h3><p>₹85</p>
+    <button onclick="order('Grapes')">Add</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1505253213348-cd54c5a9d8c7?auto=format&fit=crop&w=300&q=80">
-    <h3>Black Currant</h3>
-    <p>₹120</p>
-    <button onclick="addToCart('Black Currant',120)">Add</button>
+    <h3>Black Currant</h3><p>₹120</p>
+    <button onclick="order('Black Currant')">Add</button>
   </div>
 
 </section>
-
-<!-- CART -->
-<div class="cartBar">
-  <span id="cartText">0 items</span>
-  <button onclick="checkout()">Order</button>
-</div>
-
-<!-- ORDER STATUS -->
-<div id="statusBox" class="status hidden">
-  <p id="statusText">Order Placed</p>
-</div>
 
 <script src="script.js"></script>
 </body>
