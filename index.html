@@ -7,80 +7,80 @@
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body onload="getLocation()">
 
-<!-- TOP BAR -->
-<header>
+<header class="topbar">
   <h1>ShakeToHome</h1>
-  <p id="locationText">Detecting location...</p>
+  <p id="locationText">Fetching location...</p>
 </header>
 
-<!-- SEARCH -->
 <div class="searchBox">
-  <input type="text" placeholder="Search shakes, juices...">
+  <input type="text" placeholder="Search for shakes, juices...">
 </div>
 
-<!-- PRODUCTS GRID -->
 <section class="grid">
 
+  <!-- 9 PRODUCTS -->
+  <!-- SAME BLOCK REPEATED -->
+
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1586917049334-2f3d1c77d5b1?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1586917049334-2f3d1c77d5b1?auto=format&fit=crop&w=300&q=80">
     <h3>Oreo Shake</h3>
     <p>₹120</p>
     <button onclick="addToCart('Oreo Shake',120)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80">
-    <h3>KitKat Shake</h3>
+    <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=300&q=80">
+    <h3>KitKat</h3>
     <p>₹130</p>
-    <button onclick="addToCart('KitKat Shake',130)">Add</button>
+    <button onclick="addToCart('KitKat',130)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1553531889-56cc480ac5cb?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1553531889-56cc480ac5cb?auto=format&fit=crop&w=300&q=80">
     <h3>Strawberry</h3>
     <p>₹110</p>
     <button onclick="addToCart('Strawberry',110)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=300&q=80">
     <h3>Chocolate</h3>
     <p>₹130</p>
     <button onclick="addToCart('Chocolate',130)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=300&q=80">
     <h3>Lassi</h3>
     <p>₹90</p>
     <button onclick="addToCart('Lassi',90)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=300&q=80">
     <h3>Watermelon</h3>
     <p>₹80</p>
     <button onclick="addToCart('Watermelon',80)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1589308078054-8322a5d53e21?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1589308078054-8322a5d53e21?auto=format&fit=crop&w=300&q=80">
     <h3>Pineapple</h3>
     <p>₹85</p>
     <button onclick="addToCart('Pineapple',85)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1572441710534-68054a6b6c8c?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1572441710534-68054a6b6c8c?auto=format&fit=crop&w=300&q=80">
     <h3>Grapes</h3>
     <p>₹85</p>
     <button onclick="addToCart('Grapes',85)">Add</button>
   </div>
 
   <div class="item">
-    <img src="https://images.unsplash.com/photo-1505253213348-cd54c5a9d8c7?auto=format&fit=crop&w=400&q=80">
+    <img src="https://images.unsplash.com/photo-1505253213348-cd54c5a9d8c7?auto=format&fit=crop&w=300&q=80">
     <h3>Black Currant</h3>
     <p>₹120</p>
     <button onclick="addToCart('Black Currant',120)">Add</button>
@@ -88,15 +88,16 @@
 
 </section>
 
-<!-- CART BAR -->
-<div class="cartBar" id="cartBar">
+<!-- CART -->
+<div class="cartBar">
   <span id="cartText">0 items</span>
-  <button onclick="checkout()">Order Now</button>
+  <button onclick="checkout()">Order</button>
 </div>
 
-<!-- FLOAT BUTTONS -->
-<button class="locBtn" onclick="getLocation()">📍</button>
-<a href="tel:+917702622925" class="call">📞</a>
+<!-- ORDER STATUS -->
+<div id="statusBox" class="status hidden">
+  <p id="statusText">Order Placed</p>
+</div>
 
 <script src="script.js"></script>
 </body>
