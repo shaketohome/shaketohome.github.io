@@ -1,11 +1,14 @@
-let cart = [];
+let cart = {};
 let userLocation = "";
 
-function getLocation() {
-  if (!navigator.geolocation) {
-    alert("Location not supported");
-    return;
-  }
+/* INIT */
+function initApp() {
+  requestLocation();
+}
+
+/* LOCATION AUTO ASK */
+function requestLocation() {
+  if (!navigator.geolocation) return;
 
   navigator.geolocation.getCurrentPosition(
     (pos) => {
@@ -14,26 +17,70 @@ function getLocation() {
 
       userLocation = "https://maps.google.com/?q=" + lat + "," + lon;
 
-      // Show clean text (not link)
       document.getElementById("locationInput").value =
         "📍 Location captured";
     },
     () => {
-      alert("Please allow location");
+      console.log("Location denied");
     }
   );
 }
 
-function addToCart(name, price) {
-  cart.push({ name, price });
-
-  document.getElementById("cartCount").innerText = cart.length;
-  document.getElementById("orderText").innerText =
-    cart.length + " items";
+/* ADD TO CART */
+function addToCart(name, price, id) {
+  cart[id] = { name, price, qty: 1 };
+  updateUI();
 }
 
+/* INCREASE */
+function increase(id) {
+  cart[id].qty++;
+  updateUI();
+}
+
+/* DECREASE */
+function decrease(id) {
+  cart[id].qty--;
+
+  if (cart[id].qty <= 0) {
+    delete cart[id];
+  }
+
+  updateUI();
+}
+
+/* UPDATE UI */
+function updateUI() {
+  let totalItems = 0;
+
+  document.querySelectorAll(".item").forEach((item, index) => {
+    let controls = item.querySelector(".controls");
+
+    if (cart[index]) {
+      controls.innerHTML = `
+        <div class="qtyBox">
+          <button onclick="decrease(${index})">-</button>
+          <span>${cart[index].qty}</span>
+          <button onclick="increase(${index})">+</button>
+        </div>
+      `;
+      totalItems += cart[index].qty;
+    } else {
+      controls.innerHTML = `
+        <button onclick="addToCart('${item.dataset.name}', ${item.dataset.price}, ${index})">
+          Add
+        </button>
+      `;
+    }
+  });
+
+  document.getElementById("cartCount").innerText = totalItems;
+  document.getElementById("orderText").innerText = totalItems + " items";
+}
+
+/* CHECKOUT */
 function checkout() {
-  if (cart.length === 0) {
+  if (Object.keys(cart).length === 0) {
     alert("Cart empty");
     return;
   }
@@ -41,9 +88,9 @@ function checkout() {
   let msg = "Order:\n";
   let total = 0;
 
-  cart.forEach((i) => {
-    msg += i.name + " ₹" + i.price + "\n";
-    total += i.price;
+  Object.values(cart).forEach((i) => {
+    msg += i.name + " x" + i.qty + " ₹" + (i.price * i.qty) + "\n";
+    total += i.price * i.qty;
   });
 
   msg += "\nTotal: ₹" + total;
@@ -52,17 +99,7 @@ function checkout() {
     msg += "\nLocation: " + userLocation;
   }
 
-  let finalUrl =
-    "https://wa.me/917702622925?text=" +
-    encodeURIComponent(msg);
-
-  window.open(finalUrl, "_blank");
-}
-
-function openWhatsApp() {
-  window.open("https://wa.me/917702622925");
-}
-
-function toggleCart() {
-  alert("Cart items: " + cart.length);
+  window.open(
+    "https://wa.me/917702622925?text=" + encodeURIComponent(msg)
+  );
 }
