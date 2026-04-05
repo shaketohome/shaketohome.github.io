@@ -74,38 +74,50 @@
     </div>
 
     <script src="script.js"></script>
-        <!-- Advanced Checkout & UPI Payment Modal -->
-    <div class="modal-overlay" id="checkout-modal">
+      <!-- Smart Payment Selection Modal -->
+    <div class="modal-overlay" id="payment-modal">
         <div class="modal-content checkout-content">
             <div class="modal-header">
-                <h3>Complete Your Order</h3>
-                <span class="close-btn tap-effect" id="close-checkout">×</span>
+                <h3>Select Payment Method</h3>
+                <span class="close-btn tap-effect" id="close-payment">×</span>
             </div>
             
-            <div class="checkout-form">
-                <input type="text" id="customer-name" placeholder="Enter your Name" required>
-                
-                <div class="payment-section">
-                    <h4>Payment Options</h4>
-                    <p class="pay-amt">Amount to pay: <b id="pay-amount-display">₹0</b></p>
-                    
-                    <!-- UPI Deep Links -->
-                    <div class="upi-apps">
-                        <button class="upi-btn tap-effect gpay" onclick="triggerUPI('gpay')">GPay</button>
-                        <button class="upi-btn tap-effect phonepe" onclick="triggerUPI('phonepe')">PhonePe</button>
-                        <button class="upi-btn tap-effect paytm" onclick="triggerUPI('paytm')">Paytm</button>
-                    </div>
+            <div class="payment-body">
+                <p class="pay-amt-title">Total Amount to Pay: <strong id="pay-amount-display">₹0</strong></p>
 
-                    <!-- QR Code Fallback -->
-                    <div class="qr-section">
-                        <p>Or scan to pay:</p>
-                        <img id="upi-qr" src="" alt="UPI QR Code" loading="lazy">
-                    </div>
+                <!-- Payment Selection -->
+                <div class="payment-options">
+                    <label class="pay-option tap-effect">
+                        <input type="radio" name="pay-mode" value="cod">
+                        <span class="pay-label">💵 Cash on Delivery</span>
+                    </label>
+                    <label class="pay-option tap-effect">
+                        <input type="radio" name="pay-mode" value="upi">
+                        <span class="pay-label">📱 UPI Payment</span>
+                    </label>
                 </div>
 
-                <button class="order-btn final-confirm-btn tap-effect" id="confirm-whatsapp-btn">
-                    I Have Paid → Send via WhatsApp
-                </button>
+                <!-- COD Flow Container (Hidden by default) -->
+                <div id="cod-flow" style="display: none;">
+                    <button class="order-btn action-btn tap-effect" id="cod-confirm-btn">
+                        Place Order (COD) →
+                    </button>
+                </div>
+
+                <!-- UPI Flow Container (Hidden by default) -->
+                <div id="upi-flow" style="display: none;">
+                    <p class="small-text">Select your app to pay instantly:</p>
+                    <div class="upi-apps">
+                        <button class="upi-btn tap-effect gpay" onclick="triggerUPI('Google Pay')">GPay</button>
+                        <button class="upi-btn tap-effect phonepe" onclick="triggerUPI('PhonePe')">PhonePe</button>
+                        <button class="upi-btn tap-effect paytm" onclick="triggerUPI('Paytm')">Paytm</button>
+                    </div>
+
+                    <!-- Hidden until user clicks a UPI app -->
+                    <button class="order-btn action-btn success-btn tap-effect" id="upi-confirm-btn" style="display: none;">
+                        I HAVE PAID → Send Order
+                    </button>
+                </div>
             </div>
         </div>
     </div>
