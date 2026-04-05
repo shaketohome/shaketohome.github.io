@@ -174,3 +174,35 @@ body {
 /* Animations & Effects */
 .tap-effect:active { transform: scale(0.95); }
 @keyframes popIn { 0% { transform: scale(0.9); } 100% { transform: scale(1); } }
+
+/* === UPGRADED CHECKOUT & PAYMENT UI === */
+.checkout-content { max-width: 400px; width: 95%; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.close-btn { font-size: 1.5rem; font-weight: bold; color: var(--text-muted); cursor: pointer; }
+
+.checkout-form input {
+    width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 1rem; margin-bottom: 20px; outline: none;
+}
+.checkout-form input:focus { border-color: var(--primary); }
+
+.payment-section { background: var(--bg-color); padding: 16px; border-radius: 12px; margin-bottom: 20px; }
+.payment-section h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+.pay-amt { font-size: 1.1rem; color: var(--dark); margin-bottom: 16px; }
+
+/* Smart UPI Buttons */
+.upi-apps { display: flex; gap: 8px; margin-bottom: 16px; }
+.upi-btn {
+    flex: 1; padding: 10px 0; border: none; border-radius: 8px;
+    font-weight: bold; color: var(--white); cursor: pointer; font-size: 0.85rem;
+}
+.upi-btn.gpay { background: #1a73e8; }
+.upi-btn.phonepe { background: #5f259f; }
+.upi-btn.paytm { background: #00baf2; }
+
+/* QR Code Section */
+.qr-section { text-align: center; border-top: 1px solid var(--border); padding-top: 16px; }
+.qr-section p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+.qr-section img { width: 120px; height: 120px; border-radius: 8px; box-shadow: var(--shadow-soft); }
+
+.final-confirm-btn { width: 100%; justify-content: center; background: var(--success); }
