@@ -245,4 +245,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+    // === 14. PROGRESSIVE WEB APP (PWA) INITIALIZATION ===
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./sw.js")
+                .then((reg) => console.log("PWA Service Worker Registered! Scope:", reg.scope))
+                .catch((err) => console.warn("PWA Service Worker Failed:", err));
+        });
+    }
+
+    // Offline & Online Event Listeners
+    const offlineBanner = document.getElementById("offline-banner");
+    
+    window.addEventListener("offline", () => {
+        offlineBanner.style.display = "block";
+    });
+
+    window.addEventListener("online", () => {
+        offlineBanner.style.display = "none";
+        // Auto-refresh tracker if connection is restored
+        if(typeof checkActiveOrder === "function") checkActiveOrder(); 
+    });
+
+
 
