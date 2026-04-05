@@ -124,25 +124,46 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProducts(filtered);
     });
 
-    // === 8. GEOLOCATION ===
+     // === 8. UPGRADED GEOLOCATION (Reverse Geocoding) ===
     function requestLocation() {
+        const savedLoc = localStorage.getItem('shaketohome_loc');
+        if (savedLoc) {
+            const locData = JSON.parse(savedLoc);
+            userLocation = locData.coords;
+            locationInput.value = `Delivering to ${locData.area} 📍`;
+            locationInput.style.color = "var(--success)";
+            return;
+        }
+
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    userLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
-                    locationInput.value = "Location captured ✅";
-                    locationInput.style.color = "var(--success)";
+                async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    userLocation = `${lat},${lon}`;
+                    
+                    try {
+                        // Free reverse geocoding API
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await res.json();
+                        const area = data.address.suburb || data.address.city || data.address.village || "Current Location";
+                        
+                        locationInput.value = `Delivering to ${area} 📍`;
+                        locationInput.style.color = "var(--success)";
+                        
+                        // Save to history
+                        localStorage.setItem('shaketohome_loc', JSON.stringify({ coords: userLocation, area: area }));
+                    } catch (e) {
+                        locationInput.value = "Location captured ✅";
+                        locationInput.style.color = "var(--success)";
+                    }
                 },
                 (error) => {
                     locationInput.value = "Location access denied";
-                    console.warn("Location error: ", error.message);
                 }
             );
-        } else {
-            locationInput.value = "Location not supported";
         }
     }
-
     // === 9. CHECKOUT & iOS FIX IMPLEMENTATION ===
     orderBtn.addEventListener("click", () => {
         const cartKeys = Object.keys(cart);
@@ -204,3 +225,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
