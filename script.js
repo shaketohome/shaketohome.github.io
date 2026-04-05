@@ -164,65 +164,143 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
     }
-    // === 9. CHECKOUT & iOS FIX IMPLEMENTATION ===
+      // === 9. SMART PAYMENT FLOW & CHECKOUT ===
+    const paymentModal = document.getElementById("payment-modal");
+    const closePaymentBtn = document.getElementById("close-payment");
+    const payOptions = document.querySelectorAll(".pay-option");
+    
+    // Flow Containers
+    const codFlow = document.getElementById("cod-flow");
+    const upiFlow = document.getElementById("upi-flow");
+    const upiConfirmBtn = document.getElementById("upi-confirm-btn");
+    const codConfirmBtn = document.getElementById("cod-confirm-btn");
+
+    const BUSINESS_UPI_ID = "7702622925@ybl"; // Change to your actual UPI ID
+    let currentOrderTotal = 0;
+    let selectedUpiApp = "";
+
+    // 1. Intercept bottom "Order Now" to open modal
     orderBtn.addEventListener("click", () => {
         const cartKeys = Object.keys(cart);
-        
-        if (cartKeys.length === 0) {
-            alert("Your cart is empty! Add some drinks to continue.");
-            return;
-        }
+        if (cartKeys.length === 0) return alert("Your cart is empty!");
 
-        // 1. Show Fake Status Modal
-        modal.classList.add("active");
-        step1.className = "step done";
-        step1.innerText = "✓ Order Received";
-        step2.className = "step done";
-        step2.innerText = "✓ Details Prepared";
-        step3.className = "step active";
-        step3.innerText = "✓ Opening WhatsApp...";
+        // Calculate Total
+        currentOrderTotal = 0;
+        cartKeys.forEach(id => {
+            const product = products.find(p => p.id === parseInt(id));
+            currentOrderTotal += product.price * cart[id];
+        });
 
-        // 2. Trigger WhatsApp IMMEDIATELY (Fixes iOS Safari popup blocking)
-        generateWhatsAppMessage(cartKeys);
+        document.getElementById("pay-amount-display").innerText = `₹${currentOrderTotal}`;
         
-        // Hide Modal shortly after redirecting (if user navigates back)
-        setTimeout(() => { modal.classList.remove("active"); }, 1500);
+        // Reset Modal State
+        document.querySelectorAll('input[name="pay-mode"]').forEach(r => r.checked = false);
+        payOptions.forEach(opt => opt.classList.remove("selected"));
+        codFlow.style.display = "none";
+        upiFlow.style.display = "none";
+        upiConfirmBtn.style.display = "none";
+        codConfirmBtn.innerHTML = "Place Order (COD) →";
+        upiConfirmBtn.innerHTML = "I HAVE PAID → Send Order";
+
+        paymentModal.classList.add("active");
     });
 
-    function generateWhatsAppMessage(cartKeys) {
-        let text = `*New Order - ShakeToHome Bhupalpally* 🥤\n\n`;
-        text += `*Order Details:*\n`;
+    closePaymentBtn.addEventListener("click", () => paymentModal.classList.remove("active"));
+
+    // 2. Handle Payment Method Selection
+    payOptions.forEach(option => {
+        option.addEventListener("click", function() {
+            // Remove highlight from all, add to clicked
+            payOptions.forEach(opt => opt.classList.remove("selected"));
+            this.classList.add("selected");
+            
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            // Toggle flows
+            if (radio.value === "cod") {
+                codFlow.style.display = "block";
+                upiFlow.style.display = "none";
+            } else {
+                upiFlow.style.display = "block";
+                codFlow.style.display = "none";
+            }
+        });
+    });
+
+    // 3. Trigger UPI App Intent
+    window.triggerUPI = function(appName) {
+        selectedUpiApp = appName;
+        const upiUrl = `upi://pay?pa=${BUSINESS_UPI_ID}&pn=ShakeToHome&am=${currentOrderTotal}&cu=INR`;
         
-        let total = 0;
+        // Open UPI deep link
+        window.location.href = upiUrl;
+
+        // Show "I HAVE PAID" button once they return
+        setTimeout(() => {
+            upiConfirmBtn.style.display = "flex";
+        }, 1000);
+    };
+
+    // 4. Submit Order (COD)
+    codConfirmBtn.addEventListener("click", function() {
+        this.innerHTML = "Redirecting...";
+        this.classList.add("btn-loading");
+        finalizeOrder("Cash on Delivery");
+    });
+
+    // 5. Submit Order (UPI)
+    upiConfirmBtn.addEventListener("click", function() {
+        this.innerHTML = "Redirecting...";
+        this.classList.add("btn-loading");
+        finalizeOrder("UPI (Paid)", selectedUpiApp);
+    });
+
+    // 6. Generate WhatsApp Message
+    function finalizeOrder(paymentMode, upiApp = null) {
+        const cartKeys = Object.keys(cart);
+        let text = `*🚨 New Order - ShakeToHome* 🥤\n\n`;
+        text += `*🛍️ Order Items:*\n`;
+        
         cartKeys.forEach(id => {
             const product = products.find(p => p.id === parseInt(id));
             const qty = cart[id];
-            const lineTotal = product.price * qty;
-            total += lineTotal;
-            text += `▪ ${qty}x ${product.name} - ₹${lineTotal}\n`;
+            text += `▪ ${qty}x ${product.name}\n`;
         });
 
-        text += `\n*Total Amount:* ₹${total}\n`;
-
-        if (userLocation) {
-            text += `\n*Delivery Location:*\nhttps://maps.google.com/?q=${userLocation}`;
+        text += `\n💰 *Total:* ₹${currentOrderTotal}\n`;
+        
+        if (paymentMode === "Cash on Delivery") {
+            text += `💳 *Payment Mode:* Cash on Delivery\n`;
         } else {
-            text += `\n*Delivery Location:* Not provided. Please ask the customer for their address.`;
+            text += `💳 *Payment Mode:* UPI (Paid)\n`;
+            text += `📱 *UPI App:* ${upiApp}\n`;
         }
 
-        // Encode the message
+        // Add GPS Location Link
+        if (userLocation) {
+            text += `\n📍 *Location:*\nhttps://maps.google.com/?q=${userLocation}`;
+        } else {
+            text += `\n📍 *Location:* Not captured automatically.`;
+        }
+
         const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
         
-        // --- iOS Specific Fix ---
-        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        // Hide Modal
+        paymentModal.classList.remove("active");
 
-        if (isIOS) {
-            // iOS safe routing (Modifies current window, never gets blocked)
+        // iOS Fix Implementation
+        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
             window.location.href = waUrl;
         } else {
-            // Standard routing for Android / PC
             window.open(waUrl, '_blank');
         }
+        
+        // Reset button states
+        setTimeout(() => {
+            codConfirmBtn.classList.remove("btn-loading");
+            upiConfirmBtn.classList.remove("btn-loading");
+        }, 1000);
     }
 });
 
