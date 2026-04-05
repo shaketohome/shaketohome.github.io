@@ -9,15 +9,21 @@
 </head>
 <body>
 
-    <!-- Fixed Header -->
+    <!-- Fixed Header with Logo -->
     <header class="app-header">
         <div class="brand">
+            <!-- Vibrant Cup with Straw SVG Logo -->
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 8L8.2 20.5C8.3 21.3 9 22 9.8 22H14.2C15 22 15.7 21.3 15.8 20.5L17 8" stroke="#ff5200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 8H19" stroke="#ff5200" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M15 3L11 8" stroke="#ff5200" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="15" r="2" fill="#ff5200" fill-opacity="0.2" stroke="#ff5200" stroke-width="1.5"/>
+                </svg>
+            </div>
             <h1>ShakeToHome</h1>
         </div>
         <div class="header-actions">
-            <a href="https://wa.me/917702622925" target="_blank" class="icon-btn tap-effect" aria-label="WhatsApp Support">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-            </a>
             <div class="icon-btn tap-effect" id="header-cart-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 <span class="cart-badge" id="cart-badge">0</span>
@@ -26,7 +32,6 @@
     </header>
 
     <main class="main-content">
-        <!-- Hero Section -->
         <section class="hero">
             <h2>Order shakes & juices.<br><span>Discover the best drinks.</span></h2>
             
@@ -43,9 +48,7 @@
 
         <!-- 3x3 Product Grid -->
         <section class="menu-section">
-            <div class="grid-container" id="product-grid">
-                <!-- Products dynamically injected here -->
-            </div>
+            <div class="grid-container" id="product-grid"></div>
         </section>
     </main>
 
@@ -61,20 +64,7 @@
         </button>
     </div>
 
-    <!-- Fake Order Status Modal -->
-    <div class="modal-overlay" id="status-modal">
-        <div class="modal-content">
-            <h3 id="modal-title">Processing Order</h3>
-            <div class="status-steps">
-                <div class="step pending" id="step-1">✓ Order Received</div>
-                <div class="step pending" id="step-2">⏳ Preparing Details</div>
-                <div class="step pending" id="step-3">🚀 Redirecting to WhatsApp</div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-      <!-- Smart Payment Selection Modal -->
+    <!-- PREMIUM PAYMENT MODAL -->
     <div class="modal-overlay" id="payment-modal">
         <div class="modal-content checkout-content">
             <div class="modal-header">
@@ -83,43 +73,70 @@
             </div>
             
             <div class="payment-body">
-                <p class="pay-amt-title">Total Amount to Pay: <strong id="pay-amount-display">₹0</strong></p>
+                <div class="amount-card">
+                    <span>Total Amount</span>
+                    <strong id="pay-amount-display">₹0</strong>
+                </div>
 
-                <!-- Payment Selection -->
+                <!-- Selectable Payment Options -->
                 <div class="payment-options">
                     <label class="pay-option tap-effect">
                         <input type="radio" name="pay-mode" value="cod">
-                        <span class="pay-label">💵 Cash on Delivery</span>
+                        <div class="pay-icon cod-icon">💵</div>
+                        <span class="pay-label">Cash on Delivery</span>
                     </label>
+
                     <label class="pay-option tap-effect">
                         <input type="radio" name="pay-mode" value="upi">
-                        <span class="pay-label">📱 UPI Payment</span>
+                        <div class="pay-icon upi-icon">📱</div>
+                        <span class="pay-label">UPI Payment</span>
                     </label>
                 </div>
 
-                <!-- COD Flow Container (Hidden by default) -->
+                <!-- COD Flow -->
                 <div id="cod-flow" style="display: none;">
                     <button class="order-btn action-btn tap-effect" id="cod-confirm-btn">
-                        Place Order (COD) →
+                        Confirm Order (COD) →
                     </button>
                 </div>
 
-                <!-- UPI Flow Container (Hidden by default) -->
+                <!-- UPI Flow (With Logos) -->
                 <div id="upi-flow" style="display: none;">
-                    <p class="small-text">Select your app to pay instantly:</p>
-                    <div class="upi-apps">
-                        <button class="upi-btn tap-effect gpay" onclick="triggerUPI('Google Pay')">GPay</button>
-                        <button class="upi-btn tap-effect phonepe" onclick="triggerUPI('PhonePe')">PhonePe</button>
-                        <button class="upi-btn tap-effect paytm" onclick="triggerUPI('Paytm')">Paytm</button>
+                    <p class="small-text">Select your app to pay instantly</p>
+                    <div class="upi-apps-grid">
+                        <button class="upi-app-btn tap-effect" onclick="triggerUPI('Google Pay')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay">
+                            <span>GPay</span>
+                        </button>
+                        <button class="upi-app-btn tap-effect" onclick="triggerUPI('PhonePe')">
+                            <img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe">
+                            <span>PhonePe</span>
+                        </button>
+                        <button class="upi-app-btn tap-effect" onclick="triggerUPI('Paytm')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm">
+                            <span>Paytm</span>
+                        </button>
                     </div>
-
-                    <!-- Hidden until user clicks a UPI app -->
-                    <button class="order-btn action-btn success-btn tap-effect" id="upi-confirm-btn" style="display: none;">
-                        I HAVE PAID → Send Order
-                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- POST-PAYMENT WHATSAPP MODAL -->
+    <div class="modal-overlay" id="post-payment-modal">
+        <div class="modal-content post-payment-content">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h2>Payment Processing</h2>
+            <p>Your payment attempt is complete! Please confirm your order on WhatsApp to finalize delivery.</p>
+            
+            <button class="order-btn action-btn success-btn tap-effect" id="finalize-whatsapp-btn">
+                Confirm Order on WhatsApp →
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
