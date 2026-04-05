@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     // === 1. PRODUCT DATA (9 Items optimized for Unsplash CDN) ===
     const products = [
-  { id: 1, name: "Oreo Thick Shake", price: 120, img: "oreo.jpg" },
+  { id: 1, name: "Oreo Thick Shake", price: 120, img: "oero.jpg" },
   { id: 2, name: "KitKat Crunch", price: 130, img: "kitkatshake.jpg" },
   { id: 3, name: "Strawberry Shake", price: 110, img: "strawberry shake.jpg" },
   { id: 4, name: "Chocolate Shake", price: 120, img: "chocolate.jpg" },
