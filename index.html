@@ -3,59 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ShakeToHome | Premium Delivery</title>
+    <title>ShakeToHome Bhupalpally</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#ff5200">
 </head>
 <body>
 
-    <!-- App Header: Swiggy Style -->
+    <!-- Fixed Header -->
     <header class="app-header">
-        <div class="header-location" id="location-trigger">
-            <svg class="pin-icon" viewBox="0 0 24 24" fill="none" stroke="#FF5200" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <div class="location-text">
-                <h3>Setup Location <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></h3>
-                <p id="location-subtitle">Fetching GPS...</p>
-            </div>
+        <div class="brand">
+            <h1>ShakeToHome</h1>
         </div>
-        <div class="header-profile">
-            <a href="https://wa.me/917702622925" target="_blank" class="profile-btn tap-effect">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        <div class="header-actions">
+            <a href="https://wa.me/917702622925" target="_blank" class="icon-btn tap-effect" aria-label="WhatsApp Support">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
             </a>
+            <div class="icon-btn tap-effect" id="header-cart-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </div>
         </div>
     </header>
 
-    <!-- Sticky Search & Filters -->
-    <div class="search-container">
-        <div class="search-box tap-effect">
-            <input type="text" id="search-input" placeholder="Search for shakes, juices...">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#686b78" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </div>
-    </div>
-
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Psychology Trigger Header -->
-        <div class="section-header">
-            <h2>Recommended for you</h2>
-            <span class="trust-badge">⭐ Top Rated</span>
-        </div>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Order shakes & juices.<br><span>Discover the best drinks.</span></h2>
+            
+            <div class="input-group">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ff5200" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <input type="text" id="location-input" placeholder="Requesting location..." readonly>
+            </div>
 
-        <!-- 3x3 Premium Grid -->
-        <div class="product-grid" id="product-grid">
-            <!-- Skeleton Loaders injected here initially -->
-        </div>
+            <div class="input-group search-group tap-effect">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#686b78" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="search-input" placeholder="Search for shakes, juices...">
+            </div>
+        </section>
+
+        <!-- 3x3 Product Grid -->
+        <section class="menu-section">
+            <div class="grid-container" id="product-grid">
+                <!-- Products dynamically injected here -->
+            </div>
+        </section>
     </main>
 
-    <!-- Sticky Bottom Cart (Swiggy Checkout Style) -->
+    <!-- Sticky Bottom Cart -->
     <div class="bottom-cart" id="bottom-cart">
-        <div class="cart-left">
-            <span class="item-count" id="bottom-cart-items">1 item</span>
-            <span class="cart-total" id="bottom-cart-total">₹120</span>
+        <div class="cart-info">
+            <span id="bottom-cart-items">1 item</span>
+            <span id="bottom-cart-total">₹0</span>
         </div>
-        <button class="checkout-btn tap-effect" id="order-btn">
-            View Cart <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        <button class="order-btn tap-effect" id="order-btn">
+            Order Now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
+    </div>
+
+    <!-- Fake Order Status Modal -->
+    <div class="modal-overlay" id="status-modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Processing Order</h3>
+            <div class="status-steps">
+                <div class="step pending" id="step-1">✓ Order Received</div>
+                <div class="step pending" id="step-2">⏳ Preparing Details</div>
+                <div class="step pending" id="step-3">🚀 Redirecting to WhatsApp</div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
