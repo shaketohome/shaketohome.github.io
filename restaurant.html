@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Restaurant Menu</title>
+    <link rel="stylesheet" href="restaurants.css">
+    <meta name="theme-color" content="#ff5200">
+</head>
+<body class="menu-body">
+
+    <header class="rest-header">
+        <a href="restaurants.html" class="back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </a>
+        <div class="header-title">
+            <h1 id="menu-rest-name">Loading...</h1>
+            <p id="menu-rest-location">...</p>
+        </div>
+    </header>
+
+    <main class="rest-main">
+        <h2 class="section-title">Menu Options</h2>
+        <div class="menu-grid" id="menu-grid">
+            <!-- Products injected here -->
+        </div>
+        <div id="menu-empty" class="empty-state" style="display: none;">
+            <p>No products added for this restaurant yet.</p>
+        </div>
+    </main>
+
+    <script type="module" src="restaurants.js"></script>
+</body>
+</html>
