@@ -21,21 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // === 2. CATEGORIZED PRODUCT DATA ===
    const products = [
     // Milkshakes
-    { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "oero.jpeg" },
+    { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "Oero.jpeg" },
     { id: 2, name: "KitKat Shake", price: 130, category: "milkshakes", img: "kitkatshake.jpg" },
-    { id: 3, name: "Strawberry Shake", price: 110, category: "milkshakes", img: "strawberry shake.jpeg" },
+    { id: 3, name: "Strawberry Shake", price: 110, category: "milkshakes", img: "strawberry shake.jpg" },
     { id: 4, name: "Chocolate Shake", price: 120, category: "milkshakes", img: "chocolate shake.jpeg" },
     { id: 5, name: "Black Current", price: 140, category: "milkshakes", img: "chocolate.jpg" },
 
     // Juices
-    { id: 6, name: "Pineapple Juice", price: 60, category: "juices", img: "pineapple.jpg" },
+    { id: 6, name: "Pineapple Juice", price: 60, category: "juices", img: "pineapple.jpeg" },
     { id: 7, name: "Karbuja Juice", price: 50, category: "juices", img: "muskmelon.jpeg" },
     { id: 8, name: "Watermelon Juice", price: 50, category: "juices", img: "watermelon juice.jpeg" },
     { id: 9, name: "Grapes Juice", price: 70, category: "juices", img: "grape juice.jpeg" },
 
     // Cakes
     { id: 10, name: "Butterscotch Cake", price: 350, category: "cakes", img: "butterscotch cake.jpeg" },
-    { id: 11, name: "Pineapple Cake", price: 300, category: "cakes", img: "pineapple.jpeg" },
+    { id: 11, name: "Pineapple Cake", price: 300, category: "cakes", img: "pineapple cake.jpeg" },
     { id: 12, name: "Black Forest", price: 400, category: "cakes", img: "black forest.jpeg" },
 
     // Puff
