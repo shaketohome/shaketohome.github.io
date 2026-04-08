@@ -1,44 +1,59 @@
-const CACHE_NAME = "shaketohome-v1";
+// Change this version number EVERY TIME you update your website!
+const CACHE_NAME = 'shaketohome-v2'; 
+
 const ASSETS_TO_CACHE = [
-    "./",
-    "./index.html",
-    "./style.css",
-    "./script.js",
-    "./manifest.json"
+  '/',
+  '/index.html',
+  '/style.css',
+  '/script.js',
+  '/manifest.json'
+  // Add any local images or icons here if you have them, like '/icon-192.png'
 ];
 
-// 1. Install Service Worker & Cache Files
-self.addEventListener("install", (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
-    );
-    self.skipWaiting();
+// 1. Install Event - Caches the new files
+self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Forces the new service worker to activate immediately
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('Opened cache');
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
 });
 
-// 2. Activate & Clean up old caches
-self.addEventListener("activate", (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.filter((name) => name !== CACHE_NAME)
-                          .map((name) => caches.delete(name))
-            );
+// 2. Activate Event - Clears out the OLD cache
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          // If the cache name doesn't match our current version, delete it!
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
         })
-    );
-    self.clients.claim();
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
-// 3. Intercept Network Requests (Offline Fallback)
-self.addEventListener("fetch", (event) => {
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            // Return cached version if found, otherwise fetch from network
-            return cachedResponse || fetch(event.request).catch(() => {
-                // If network fails (offline), it safely ignores without crashing
-                console.log("App is currently offline.");
-            });
-        })
-    );
+// 3. Fetch Event - "Network First, falling back to cache" Strategy
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((networkResponse) => {
+        // If we have internet, get the newest files from GitHub and save them
+        return caches.open(CACHE_NAME).then((cache) => {
+          if (event.request.method === 'GET') {
+             cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        });
+      })
+      .catch(() => {
+        // If the user is offline, load the saved version from the cache
+        return caches.match(event.request);
+      })
+  );
 });
