@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Track Order - ShakeToHome</title>
+    <meta name="theme-color" content="#ff5200">
+    
+    <!-- Leaflet.js (Lightweight Map Library) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="track.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="track-header">
+        <button onclick="window.history.back()" class="back-btn">←</button>
+        <div class="header-info">
+            <h2>Track Order</h2>
+            <span id="order-id-display">Loading...</span>
+        </div>
+    </header>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Bottom Tracking Panel (Swiggy Style) -->
+    <div class="bottom-sheet">
+        <div class="status-banner" id="status-banner">
+            <h3 id="status-title">Fetching Order...</h3>
+            <p id="eta-text">Calculating ETA...</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-step active" id="step-pending">
+                <div class="step-icon">📝</div>
+                <div class="step-text">Order Received</div>
+            </div>
+            <div class="timeline-step" id="step-preparing">
+                <div class="step-icon">🥤</div>
+                <div class="step-text">Preparing your order</div>
+            </div>
+            <div class="timeline-step" id="step-out">
+                <div class="step-icon">🛵</div>
+                <div class="step-text">Out for Delivery</div>
+            </div>
+            <div class="timeline-step" id="step-delivered">
+                <div class="step-icon">✅</div>
+                <div class="step-text">Delivered</div>
+            </div>
+        </div>
+
+        <div class="rider-info" id="rider-info" style="display: none;">
+            <div class="rider-avatar">🛵</div>
+            <div class="rider-details">
+                <h4>Delivery Partner</h4>
+                <p>Arriving shortly</p>
+            </div>
+            <a href="https://wa.me/917702622925" class="call-rider-btn">WhatsApp</a>
+        </div>
+    </div>
+
+    <script type="module" src="track.js"></script>
+</body>
+</html>
