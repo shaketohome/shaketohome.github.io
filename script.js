@@ -18,40 +18,40 @@ console.log("Firebase connected");
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // === 2. CATEGORIZED PRODUCT DATA ===
-   const products = [
-    // Milkshakes
-    { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "Oero.jpeg" },
-    { id: 2, name: "KitKat Shake", price: 120, category: "milkshakes", img: "kitkatshake.jpg" },
-    { id: 3, name: "Strawberry Shake", price: 120, category: "milkshakes", img: "strawberry shake.jpg" },
-    { id: 4, name: "Chocolate Shake", price: 120, category: "milkshakes", img: "chocolate shake.jpeg" },
-    { id: 5, name: "Black Current", price: 120, category: "milkshakes", img: "chocolate.jpg" },
+    // === 2. CATEGORIZED PRODUCT DATA (YOUR EXACT IMAGES) ===
+    const products = [
+        // Milkshakes
+        { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "Oero.jpeg" },
+        { id: 2, name: "KitKat Shake", price: 120, category: "milkshakes", img: "kitkatshake.jpg" },
+        { id: 3, name: "Strawberry Shake", price: 120, category: "milkshakes", img: "strawberry shake.jpg" },
+        { id: 4, name: "Chocolate Shake", price: 120, category: "milkshakes", img: "chocolate shake.jpeg" },
+        { id: 5, name: "Black Current", price: 120, category: "milkshakes", img: "chocolate.jpg" },
 
-    // Juices
-    { id: 6, name: "Pineapple Juice", price: 60, category: "juices", img: "pineapple.jpeg" },
-    { id: 7, name: "Karbuja Juice", price: 60, category: "juices", img: "muskmelon.jpeg" },
-    { id: 8, name: "Watermelon Juice", price: 60, category: "juices", img: "watermelon juice.jpeg" },
-    { id: 9, name: "Grapes Juice", price: 60, category: "juices", img: "grape juice.jpeg" },
+        // Juices
+        { id: 6, name: "Pineapple Juice", price: 60, category: "juices", img: "pineapple.jpeg" },
+        { id: 7, name: "Karbuja Juice", price: 60, category: "juices", img: "muskmelon.jpeg" },
+        { id: 8, name: "Watermelon Juice", price: 60, category: "juices", img: "watermelon juice.jpeg" },
+        { id: 9, name: "Grapes Juice", price: 60, category: "juices", img: "grape juice.jpeg" },
 
-    // Cakes
-    { id: 10, name: "Butterscotch Cake", price: 300, category: "cakes", img: "butterscotch cake.jpeg" },
-    { id: 11, name: "Pineapple Cake", price: 300, category: "cakes", img: "pineapple cake.jpeg" },
-    { id: 12, name: "Black Forest", price: 300, category: "cakes", img: "black forest.jpeg" },
+        // Cakes
+        { id: 10, name: "Butterscotch Cake", price: 300, category: "cakes", img: "butterscotch cake.jpeg" },
+        { id: 11, name: "Pineapple Cake", price: 300, category: "cakes", img: "pineapple cake.jpeg" },
+        { id: 12, name: "Black Forest", price: 300, category: "cakes", img: "black forest.jpeg" },
 
-    // Puff
-    { id: 13, name: "Egg Puff", price: 30, category: "puff", img: "egg puff.jpeg" },
-    { id: 14, name: "Curry Puff", price: 30, category: "puff", img: "veg puff.jpeg" },
-    { id: 15, name: "Chicken Puff", price: 30, category: "puff", img: "chicken puff.jpeg" },
+        // Puff
+        { id: 13, name: "Egg Puff", price: 30, category: "puff", img: "egg puff.jpeg" },
+        { id: 14, name: "Curry Puff", price: 30, category: "puff", img: "veg puff.jpeg" },
+        { id: 15, name: "Chicken Puff", price: 30, category: "puff", img: "chicken puff.jpeg" },
 
-    // Biryani
-    { id: 16, name: "Chicken Dum Biryani", price: 200, category: "biryani", img: "biryani.jpeg" },
+        // Biryani
+        { id: 16, name: "Chicken Dum Biryani", price: 200, category: "biryani", img: "biryani.jpeg" },
 
-    // Mojito
-    { id: 17, name: "Blue Mojito", price: 80, category: "mojito", img: "blue mojito.jpeg" },
-    { id: 18, name: "Lime Mojito", price: 80, category: "mojito", img: "lime mojito.jpeg" },
-    { id: 19, name: "Watermelon Mojito", price: 80, category: "mojito", img: "watermelon mojito.jpeg" },
-    { id: 20, name: "Strawberry Mojito", price: 80, category: "mojito", img: "strawberry mojito.jpeg" }
-];
+        // Mojito
+        { id: 17, name: "Blue Mojito", price: 80, category: "mojito", img: "blue mojito.jpeg" },
+        { id: 18, name: "Lime Mojito", price: 80, category: "mojito", img: "lime mojito.jpeg" },
+        { id: 19, name: "Watermelon Mojito", price: 80, category: "mojito", img: "watermelon mojito.jpeg" },
+        { id: 20, name: "Strawberry Mojito", price: 80, category: "mojito", img: "strawberry mojito.jpeg" }
+    ];
 
     // === 3. STATE ===
     let cart = {}; 
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // === 4. DOM ELEMENTS ===
     const gridContainer = document.getElementById("product-grid");
-    const categoryBar = document.getElementById("category-bar"); // Added category element
+    const categoryBar = document.getElementById("category-bar"); 
     const searchInput = document.getElementById("search-input");
     const locationTrigger = document.getElementById("location-trigger");
     const locationInput = document.getElementById("location-input");
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderCategoryBar() {
         if (!categoryBar) return;
-        categoryBar.innerHTML = ""; // Clear existing
+        categoryBar.innerHTML = ""; 
         
         categoryList.forEach(cat => {
             const btn = document.createElement("button");
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             btn.addEventListener("click", () => {
                 activeCategory = cat;
-                renderCategoryBar(); // Highlight new button
-                filterProducts();    // Filter grid
+                renderCategoryBar(); 
+                filterProducts();    
             });
             
             categoryBar.appendChild(btn);
@@ -94,35 +94,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterProducts() {
         if (activeCategory === "All") {
-            renderProducts(products); // Show all
+            renderProducts(products); 
         } else {
             const filtered = products.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
-            renderProducts(filtered); // Show filtered
+            renderProducts(filtered); 
         }
     }
 
     // === 6. INIT ===
     if(gridContainer) {
-        renderCategoryBar(); // Load categories
-        filterProducts();    // Load products
+        renderCategoryBar(); 
+        filterProducts();    
     }
     checkPostPaymentReturn(); 
 
-    // === 7. LOCATION LOGIC ===
+    // === 7. STRICT LOCATION LOGIC (AUTO-FETCH) ===
+    function fetchUserLocation() {
+        if ("geolocation" in navigator) {
+            locationInput.value = "Fetching GPS...";
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    userLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
+                    locationInput.value = "📍 Delivering to your location";
+                    locationInput.style.color = "var(--success)";
+                },
+                () => { 
+                    locationInput.value = "Location access denied. Tap to retry."; 
+                    locationInput.style.color = "#e74c3c";
+                }
+            );
+        }
+    }
+
+    // Call it automatically when app opens
+    fetchUserLocation();
+
+    // Also call if user taps the bar manually
     if(locationTrigger) {
-        locationTrigger.addEventListener("click", () => {
-            if ("geolocation" in navigator) {
-                locationInput.value = "Fetching GPS...";
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        userLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
-                        locationInput.value = "📍 Delivering to your location";
-                        locationInput.style.color = "var(--success)";
-                    },
-                    () => { locationInput.value = "Location access denied"; }
-                );
-            }
-        });
+        locationTrigger.addEventListener("click", fetchUserLocation);
     }
 
     // === 8. RENDER & CART SYSTEM ===
@@ -214,6 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const cartKeys = Object.keys(cart);
             if (cartKeys.length === 0) return;
 
+            // 🛑 STRICT LOCATION CHECK
+            if (!userLocation) {
+                alert("📍 Please allow GPS location access so we know where to deliver your order!");
+                if(locationTrigger) locationTrigger.click();
+                return; // Blocks the payment screen
+            }
+
             currentOrderTotal = 0;
             cartKeys.forEach(id => {
                 const product = products.find(p => p.id === parseInt(id));
@@ -248,7 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(codConfirmBtn) {
         codConfirmBtn.addEventListener("click", function() {
-            paymentModal.classList.remove("active");
             finalizeWhatsAppOrder(cart, currentOrderTotal, "Cash on Delivery", null);
         });
     }
@@ -287,11 +302,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("post-payment-modal").classList.remove("active");
             cart = {};
             updateCartUI();
-            renderProducts(products); // Reset grid
+            renderProducts(products);
         });
     }
 
-    // === 10. MASTER WHATSAPP & FIREBASE SYSTEM ===
+    // === 10. MASTER WHATSAPP, FIREBASE & TRACKING SYSTEM ===
     async function finalizeWhatsAppOrder(activeCart, total, paymentMode, appName) {
         const orderId = "SHK" + Math.floor(1000 + Math.random() * 9000);
         
@@ -318,18 +333,29 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("❌ FIREBASE ERROR:", error);
             alert("Database Error: " + error.message);
+            return;
         }
 
-        let text = `Hi, I have placed an order.\n\n*Order ID:* ${orderId}\n\n*Order:*\n${itemsString}\n`;
+        let text = `*NEW ORDER* 🚨\n\n*Order ID:* ${orderId}\n\n*Items:*\n${itemsString}\n`;
         text += `*Total:* ₹${total}\n*Payment:* ${paymentMode}\n`;
         if (paymentMode === "UPI (Paid)") text += `*UPI ID:* ${BUSINESS_UPI_ID}\n`;
-        text += `*Location:*\n${locationLink}`;
+        text += `*Location:*\n${locationLink}\n\n`;
+        text += `📍 *TRACK YOUR ORDER LIVE HERE:*\n`;
+        text += `https://shaketohome.github.io/track.html?orderId=${orderId}`;
 
         const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
-        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            window.location.href = waUrl;
-        } else {
+        
+        // Hide payment modal
+        if(paymentModal) paymentModal.classList.remove("active");
+        
+        // Show Swiggy Style Success Animation
+        const successOverlay = document.getElementById("success-overlay");
+        if(successOverlay) successOverlay.classList.add("active");
+
+        // Wait for animation, then redirect to Tracking Map & Open WhatsApp
+        setTimeout(() => {
             window.open(waUrl, '_blank');
-        }
+            window.location.href = `track.html?orderId=${orderId}`;
+        }, 1500);
     }
 });
