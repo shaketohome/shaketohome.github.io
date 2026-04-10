@@ -53,9 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 20, name: "Strawberry Mojito", price: 80, category: "mojito", img: "strawberry mojito.jpeg" }
     ];
 
-    // === 3. STATE ===
+    // === 3. STATE (REMOVED GLOBAL LOCATION BUG) ===
     let cart = {}; 
-    let userLocation = null;
     const WA_NUMBER = "917702622925"; 
 
     // === 4. DOM ELEMENTS ===
@@ -104,61 +103,54 @@ document.addEventListener("DOMContentLoaded", () => {
         filterProducts();    
     }
 
-    // === 6. SAFE LOCATION HANDLING (NON-BLOCKING) ===
-    function getLocationSafe() {
-        if (!navigator.geolocation) {
-            console.log("Geolocation not supported by this browser.");
-            if(locationInput) locationInput.value = "GPS not supported. Tap to try manually.";
-            return;
-        }
-
-        if(locationInput) locationInput.value = "Fetching GPS...";
-
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                userLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
-                console.log("Location captured:", userLocation);
-                if(locationInput) {
-                    locationInput.value = "📍 Delivering to your location";
-                    locationInput.style.color = "var(--success)";
-                }
-            },
-            (err) => {
-                console.log("Location blocked or failed:", err.message);
-                userLocation = null;
-                if(locationInput) {
-                    locationInput.value = "Location blocked. Tap to retry.";
-                    locationInput.style.color = "#e74c3c";
-                }
-            },
-            {
-                timeout: 5000,
-                enableHighAccuracy: true
+    // === 6. PROMISE-BASED LOCATION CAPTURE (THE FIX) ===
+    function getLocationPromise() {
+        return new Promise((resolve) => {
+            if (!navigator.geolocation) {
+                console.log("Geolocation not supported");
+                resolve(null);
+                return;
             }
-        );
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const coords = `${pos.coords.latitude},${pos.coords.longitude}`;
+                    resolve(coords);
+                },
+                (err) => {
+                    console.log("Location blocked or failed:", err.message);
+                    resolve(null);
+                },
+                {
+                    timeout: 7000,
+                    enableHighAccuracy: true
+                }
+            );
+        });
     }
 
-    // Auto-fetch location on load
-    getLocationSafe();
-
-    // Allow user to retry if they tap the location bar
-    if(locationTrigger) {
-        locationTrigger.addEventListener("click", getLocationSafe);
-    }
-
-    // === FALLBACK LOCATION HELPER ===
-    function getLocationText() {
-        if (userLocation) {
-            return `https://maps.google.com/?q=${userLocation}`;
-        } else {
-            return "Location not provided. Customer will share via chat.";
+    // UI Updater for the top search bar location visual
+    async function initLocationUI() {
+        if(locationInput) locationInput.value = "Fetching GPS...";
+        const loc = await getLocationPromise();
+        if (loc && locationInput) {
+            locationInput.value = "📍 Delivering to your location";
+            locationInput.style.color = "var(--success)";
+        } else if (locationInput) {
+            locationInput.value = "Location blocked. Tap to retry.";
+            locationInput.style.color = "#e74c3c";
         }
+    }
+
+    // Auto-fetch location UI on load & allow manual retry
+    initLocationUI();
+    if(locationTrigger) {
+        locationTrigger.addEventListener("click", initLocationUI);
     }
 
     // === 7. RENDER & CART SYSTEM ===
     function renderProducts(items) {
         gridContainer.innerHTML = "";
-        
         if (items.length === 0) {
             gridContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-muted);">No products found.</p>`;
             return;
@@ -242,8 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
         orderBtn.addEventListener("click", () => {
             const cartKeys = Object.keys(cart);
             if (cartKeys.length === 0) return;
-
-            // NO LOCATION BLOCKING! User can proceed even if GPS failed.
             
             currentOrderTotal = 0;
             cartKeys.forEach(id => {
@@ -278,8 +268,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // === 9. WHATSAPP, FIREBASE & TRACKING SYSTEM (UPDATED FALLBACK) ===
+    // === 9. WHATSAPP, FIREBASE & TRACKING SYSTEM (AWAIT PROMISE FIX) ===
     async function finalizeWhatsAppOrder(activeCart, total, paymentMode) {
+        const confirmBtn = document.getElementById("cod-confirm-btn");
+        const originalBtnText = confirmBtn.innerText;
+        confirmBtn.innerText = "Processing GPS..."; // UX improvement while waiting
+        
+        // 🚀 WAIT FOR LOCATION BEFORE PROCEEDING
+        const userLocation = await getLocationPromise();
+        console.log("Location acquired at checkout:", userLocation);
+
+        let locationText;
+        if (userLocation) {
+            locationText = `https://maps.google.com/?q=${userLocation}`;
+        } else {
+            locationText = "Location not provided. Please ask customer on WhatsApp.";
+        }
+
         const orderId = "SHK" + Math.floor(1000 + Math.random() * 9000);
         
         let itemsString = "";
@@ -288,9 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
             itemsString += `▪ ${activeCart[id]}x ${product.name}\n`;
         });
 
-        // 🚀 SAFELY FETCH LOCATION OR FALLBACK TEXT
-        const locationText = getLocationText();
-
         console.log("Saving order to Firestore...");
         try {
             await setDoc(doc(window.db, "orders", orderId), {
@@ -298,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 items: itemsString,
                 total: total,
                 paymentMethod: paymentMode,
-                location: locationText, // Safely handles missing GPS
+                location: locationText, // Safely handled!
                 status: "pending",
                 timestamp: serverTimestamp()
             });
@@ -306,6 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("❌ FIREBASE ERROR:", error);
             alert("Database Error: " + error.message);
+            confirmBtn.innerText = originalBtnText; // Reset button
             return;
         }
 
@@ -334,7 +337,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = `track.html?orderId=${orderId}`;
             }, 1500);
         } else {
-            // Fallback if animation missing
             window.open(waUrl, '_blank');
             window.location.href = `track.html?orderId=${orderId}`;
         }
