@@ -1,5 +1,5 @@
 // Change this version number EVERY TIME you update your website!
-const CACHE_NAME = 'shaketohome-v9'; 
+const CACHE_NAME = 'shaketohome-v10'; 
 
 const ASSETS_TO_CACHE = [
   '/',
