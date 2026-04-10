@@ -3,38 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ShakeToHome Bhupalpally</title>
-    <!-- Tell browsers NEVER to cache this page -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-    <!-- PWA & iOS Support Meta Tags -->
+    <title>ShakeToHome</title>
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ff5200">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ShakeToHome">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-    <!-- Offline Banner UI (Hidden by default) -->
-    <style>
-        #offline-banner {
-            display: none; position: fixed; top: 0; left: 0; width: 100%;
-            background: #e74c3c; color: #ffffff; text-align: center;
-            padding: 10px; font-weight: 700; z-index: 9999; font-size: 0.85rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-    </style>
-    <link rel="stylesheet" href="style.css?v=1.8">
-    <meta name="theme-color" content="#ff5200">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
-    <div id="offline-banner">⚠️ You are currently offline. Check your internet connection.</div>
-
-    <!-- Fixed Header with Logo -->
     <header class="app-header">
         <div class="brand">
-            <!-- Vibrant Cup with Straw SVG Logo -->
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 8L8.2 20.5C8.3 21.3 9 22 9.8 22H14.2C15 22 15.7 21.3 15.8 20.5L17 8" stroke="#ff5200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -55,152 +40,79 @@
 
     <main class="main-content">
         <section class="hero">
-            <h2>Order shakes & juices.<br><span>Discover the best drinks.</span></h2>
-            
-            <div class="input-group">
+            <div class="input-group tap-effect" id="location-trigger">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#ff5200" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 <input type="text" id="location-input" placeholder="Requesting location..." readonly>
             </div>
 
             <div class="input-group search-group tap-effect">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#686b78" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="search-input" placeholder="Search for shakes, juices...">
+                <input type="text" id="search-input" placeholder="Search for shakes, juices, cakes...">
             </div>
         </section>
 
-        <!-- 🍽️ EXPLORE RESTAURANTS (SWIGGY STYLE HORIZONTAL SCROLL) -->
-        <section class="explore-restaurants" style="display:none;">
-            <div class="section-header">
-                <h2>🍽️ Explore Restaurants</h2>
-                <a href="restaurants.html" class="view-all-link tap-effect">View All</a>
-            </div>
-            
-            <div class="restaurant-scroll-container">
-                <!-- Preview Card 1 -->
-                <a href="restaurants.html" class="mini-rest-card tap-effect">
-                    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=300&q=80" alt="Royal Shakes" class="mini-rest-img" loading="lazy">
-                    <div class="mini-rest-info">
-                        <h4>Royal Shakes</h4>
-                        <p>Main Market</p>
-                    </div>
-                </a>
-                
-                <!-- Preview Card 2 -->
-                <a href="restaurants.html" class="mini-rest-card tap-effect">
-                    <img src="https://images.unsplash.com/photo-1600718374662-0483d2b9da44?w=300&q=80" alt="The Juice Bar" class="mini-rest-img" loading="lazy">
-                    <div class="mini-rest-info">
-                        <h4>The Juice Bar</h4>
-                        <p>Gandhi Chowk</p>
-                    </div>
-                </a>
-
-                <!-- Preview Card 3 -->
-                <a href="restaurants.html" class="mini-rest-card tap-effect">
-                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=300&q=80" alt="Dessert Den" class="mini-rest-img" loading="lazy">
-                    <div class="mini-rest-info">
-                        <h4>Dessert Den</h4>
-                        <p>Bus Stand Road</p>
-                    </div>
-                </a>
-
-                <!-- View More Card -->
-                <a href="restaurants.html" class="mini-rest-card view-more-card tap-effect">
-                    <div class="view-more-icon">→</div>
-                    <h4>View All</h4>
-                    <p>Partner Menus</p>
-                </a>
-            </div>
-        </section>
-
-        <!-- PREMIUM CATEGORY FILTER BAR -->
         <section class="category-section">
-            <div class="category-scroll" id="category-bar">
-                <!-- Category buttons will be injected here -->
-            </div>
+            <div class="category-scroll" id="category-bar"></div>
         </section>
 
-        <!-- 3x3 Product Grid -->
         <section class="menu-section">
-            <div class="grid-container" id="product-grid">
-                <!-- Products dynamically injected here -->
-            </div>
+            <div class="grid-container" id="product-grid"></div>
         </section>
     </main>
 
-    <!-- Sticky Bottom Cart -->
     <div class="bottom-cart" id="bottom-cart">
         <div class="cart-info">
             <span id="bottom-cart-items">1 item</span>
             <span id="bottom-cart-total">₹0</span>
         </div>
         <button class="order-btn tap-effect" id="order-btn">
-            Order Now
+            Checkout
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
     </div>
 
-       <!-- PREMIUM PAYMENT MODAL -->
     <div class="modal-overlay" id="payment-modal">
         <div class="modal-content checkout-content">
             <div class="modal-header">
-                <h3>Select Payment Method</h3>
+                <h3>Select Payment</h3>
                 <span class="close-btn tap-effect" id="close-payment">×</span>
             </div>
             
             <div class="payment-body">
                 <div class="amount-card">
-                    <span>Total Amount</span>
+                    <span>Amount to Pay</span>
                     <strong id="pay-amount-display">₹0</strong>
                 </div>
 
-                <!-- Selectable Payment Options -->
                 <div class="payment-options">
-                    <!-- Cash On Delivery Option -->
                     <label class="pay-option tap-effect">
                         <input type="radio" name="pay-mode" value="cod">
                         <div class="pay-icon cod-icon">💵</div>
                         <span class="pay-label">Cash on Delivery</span>
                     </label>
 
-                    <!-- UPI Option (Hidden safely so code doesn't break) -->
-                    <label class="pay-option" style="display: none;">
+                    <label class="pay-option tap-effect">
                         <input type="radio" name="pay-mode" value="upi">
+                        <div class="pay-icon upi-icon">📱</div>
+                        <span class="pay-label">UPI Payment</span>
                     </label>
                 </div>
 
-                <!-- COD Flow -->
                 <div id="cod-flow" style="display: none;">
                     <button class="order-btn action-btn tap-effect" id="cod-confirm-btn">
-                        Confirm Order (COD) →
+                        Confirm Order
                     </button>
                 </div>
-
-                <!-- UPI Flow (Hidden safely) -->
-                <div id="upi-flow" style="display: none;"></div>
             </div>
         </div>
     </div>
 
-    <!-- POST-PAYMENT WHATSAPP MODAL -->
-    <div class="modal-overlay" id="post-payment-modal">
-        <div class="modal-content post-payment-content">
-            <div class="success-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </div>
-            <h2>Payment Processing</h2>
-            <p>Your payment attempt is complete! Please confirm your order on WhatsApp to finalize delivery.</p>
-            
-            <button class="order-btn action-btn success-btn tap-effect" id="finalize-whatsapp-btn">
-                Confirm Order on WhatsApp →
-            </button>
-        </div>
-    </div>
-    <!-- 🚀 NEW: FULL SCREEN SUCCESS OVERLAY -->
     <div class="success-overlay" id="success-overlay">
         <div class="checkmark">✅</div>
-        <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 10px;">Order Placed!</h2>
-        <p style="font-size: 1rem; opacity: 0.9;">Taking you to live tracking...</p>
+        <h2>Order Placed!</h2>
+        <p>Connecting to WhatsApp...</p>
     </div>
-    <script type="module" src="script.js?v=1.9"></script>
+
+    <script type="module" src="script.js?v=6"></script>
 </body>
 </html>
