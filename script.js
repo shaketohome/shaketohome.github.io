@@ -87,29 +87,82 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // === 6. INIT ===
-    if(gridContainer) {
-        renderCategoryBar(); // Load categories
-        filterProducts();    // Load products
-    }
-    checkPostPaymentReturn(); 
+   // ===== GLOBAL =====
+let cachedLocation = null;
+let isFetchingLocation = false;
 
-    // === 7. LOCATION LOGIC ===
-    if(locationTrigger) {
-        locationTrigger.addEventListener("click", () => {
-            if ("geolocation" in navigator) {
-                locationInput.value = "Fetching GPS...";
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        userLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
-                        locationInput.value = "📍 Delivering to your location";
-                        locationInput.style.color = "var(--success)";
-                    },
-                    () => { locationInput.value = "Location access denied"; }
-                );
+// ===== SAFE LOCATION FUNCTION =====
+function getLocationSafe() {
+    return new Promise((resolve) => {
+
+        // ✅ Use cached location
+        if (cachedLocation) {
+            resolve(cachedLocation);
+            return;
+        }
+
+        // ✅ Prevent multiple calls
+        if (isFetchingLocation) {
+            setTimeout(() => resolve(cachedLocation), 2000);
+            return;
+        }
+
+        isFetchingLocation = true;
+
+        // ❌ If not supported
+        if (!navigator.geolocation) {
+            resolve(null);
+            isFetchingLocation = false;
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                cachedLocation = `${pos.coords.latitude},${pos.coords.longitude}`;
+                isFetchingLocation = false;
+                resolve(cachedLocation);
+            },
+            (err) => {
+                console.log("Location error:", err.message);
+                isFetchingLocation = false;
+                resolve(null);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 60000
             }
-        });
-    }
+        );
+    });
+}
+
+// ===== DETECT INSTAGRAM / IN-APP =====
+function isInAppBrowser() {
+    const ua = navigator.userAgent || navigator.vendor;
+    return /Instagram|FBAN|FBAV|WhatsApp/i.test(ua);
+}
+
+// ===== INIT LOCATION BUTTON =====
+if (locationTrigger) {
+    locationTrigger.addEventListener("click", async () => {
+
+        locationInput.value = "Fetching location...";
+
+        const loc = await getLocationSafe();
+
+        if (loc) {
+            locationInput.value = "📍 Location detected";
+            locationInput.style.color = "green";
+        } else {
+            // 🔥 Instagram / blocked case
+            if (isInAppBrowser()) {
+                locationInput.value = "⚠️ Open in Chrome for location";
+            } else {
+                locationInput.value = "Location not available";
+            }
+        }
+    });
+}
 
     // === 8. RENDER & CART SYSTEM ===
     function renderProducts(items) {
