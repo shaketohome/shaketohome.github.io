@@ -62,18 +62,28 @@ function renderProducts(items) {
 
         card.innerHTML = `
             <img src="${product.img}" class="card-img">
+
             <div class="card-info">
-                <h3>${product.name}</h3>
-                <p>₹${product.price}</p>
-                ${
-                    qty === 0
-                    ? `<button onclick="updateCart(${product.id},1)">ADD</button>`
-                    : `<div>
-                        <button onclick="updateCart(${product.id},-1)">-</button>
-                        ${qty}
-                        <button onclick="updateCart(${product.id},1)">+</button>
-                      </div>`
-                }
+
+                <div class="card-text">
+                    <div class="card-title">${product.name}</div>
+                    <div class="card-price">₹${product.price}</div>
+                </div>
+
+                <div class="btn-wrapper">
+                    ${
+                        qty === 0
+                        ? `<button class="btn-add" onclick="updateCart(${product.id},1)">ADD</button>`
+                        : `
+                        <div class="btn-qty">
+                            <button onclick="updateCart(${product.id},-1)">-</button>
+                            <span>${qty}</span>
+                            <button onclick="updateCart(${product.id},1)">+</button>
+                        </div>
+                        `
+                    }
+                </div>
+
             </div>
         `;
 
