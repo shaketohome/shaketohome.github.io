@@ -1,8 +1,9 @@
+// ===== FIREBASE =====
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getFirestore, doc, setDoc, serverTimestamp, collection } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCThtrwNBs31H3KsM9DdVtY2Jctnybp_0",
+  apiKey: "AIzaSyCThtrwNBs31H3KsM9DdVtY2ZJctnybp_0",
   authDomain: "shaketohome-a1156.firebaseapp.com",
   projectId: "shaketohome-a1156",
   storageBucket: "shaketohome-a1156.appspot.com",
@@ -12,8 +13,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-window.db = db;
 
+// ===== PRODUCTS (UNCHANGED) =====
 const products = [
     { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "Oero.jpeg" },
     { id: 2, name: "KitKat Shake", price: 120, category: "milkshakes", img: "kitkatshake.jpg" },
@@ -37,74 +38,35 @@ const products = [
     { id: 20, name: "Strawberry Mojito", price: 80, category: "mojito", img: "strawberry mojito.jpeg" }
 ];
 
+// ===== STATE =====
 let cart = {};
 const WA_NUMBER = "917702622925";
 
+// ===== DOM =====
 const gridContainer = document.getElementById("product-grid");
-const categoryBar = document.getElementById("category-bar");
 const searchInput = document.getElementById("search-input");
 const locationInput = document.getElementById("location-input");
 const locationTrigger = document.getElementById("location-trigger");
 const bottomCart = document.getElementById("bottom-cart");
 const checkoutBtn = document.getElementById("checkout-btn");
-const paymentModal = document.getElementById("payment-modal");
-const closePayment = document.getElementById("close-payment");
-const confirmOrderBtn = document.getElementById("confirm-order-btn");
-const payAmountDisplay = document.getElementById("pay-amount-display");
-const cartBadge = document.getElementById("cart-badge");
 
-const categoryList = ["All", "Milkshakes", "Juices", "Cakes", "Puff", "Biryani", "Mojito"];
-let activeCategory = "All";
-
-// ===== CATEGORY =====
-function renderCategoryBar() {
-    categoryBar.innerHTML = "";
-    categoryList.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = `category-btn ${cat === activeCategory ? 'active' : ''}`;
-        btn.innerText = cat;
-        btn.addEventListener("click", () => {
-            activeCategory = cat;
-            renderCategoryBar();
-            filterProducts();
-        });
-        categoryBar.appendChild(btn);
-    });
-}
-
-// ===== FILTER =====
-function filterProducts() {
-    const query = searchInput.value.toLowerCase();
-    let filtered = products;
-
-    if (activeCategory !== "All") {
-        filtered = filtered.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
-    }
-    if (query) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(query));
-    }
-    renderProducts(filtered);
-}
-
-// ===== RENDER =====
+// ===== RENDER (UNCHANGED STRUCTURE) =====
 function renderProducts(items) {
     gridContainer.innerHTML = "";
-    if (items.length === 0) {
-        gridContainer.innerHTML = `<p style="grid-column:1/-1;text-align:center;">No products</p>`;
-        return;
-    }
 
     items.forEach(product => {
         const qty = cart[product.id] || 0;
 
         const card = document.createElement("div");
         card.className = "card";
+
         card.innerHTML = `
             <img src="${product.img}" class="card-img">
             <div class="card-info">
                 <h3>${product.name}</h3>
                 <p>₹${product.price}</p>
-                ${qty === 0
+                ${
+                    qty === 0
                     ? `<button onclick="updateCart(${product.id},1)">ADD</button>`
                     : `<div>
                         <button onclick="updateCart(${product.id},-1)">-</button>
@@ -114,6 +76,7 @@ function renderProducts(items) {
                 }
             </div>
         `;
+
         gridContainer.appendChild(card);
     });
 }
@@ -123,6 +86,7 @@ window.updateCart = function(id, delta) {
     if (!cart[id]) cart[id] = 0;
     cart[id] += delta;
     if (cart[id] <= 0) delete cart[id];
+
     renderProducts(products);
     updateCartUI();
 };
@@ -133,11 +97,9 @@ function updateCartUI() {
 
     Object.entries(cart).forEach(([id, qty]) => {
         totalItems += qty;
-        const product = products.find(p => p.id == id);
-        totalPrice += product.price * qty;
+        const p = products.find(x => x.id == id);
+        totalPrice += p.price * qty;
     });
-
-    cartBadge.innerText = totalItems;
 
     if (totalItems > 0) {
         bottomCart.classList.add("visible");
@@ -152,7 +114,7 @@ function updateCartUI() {
 function getLocationPromise() {
     return new Promise((resolve) => {
 
-        // 🔥 Instagram fix
+        // Instagram fix
         if (/Instagram/i.test(navigator.userAgent)) {
             resolve(null);
             return;
@@ -171,7 +133,6 @@ function getLocationPromise() {
     });
 }
 
-// ===== LOCATION UI =====
 async function fetchLocationUI() {
     locationInput.value = "Detecting location...";
     const loc = await getLocationPromise();
@@ -183,52 +144,49 @@ async function fetchLocationUI() {
     }
 }
 
-// ===== CHECKOUT =====
-checkoutBtn.addEventListener("click", () => {
-    let total = 0;
-    Object.entries(cart).forEach(([id, qty]) => {
-        total += products.find(p => p.id == id).price * qty;
-    });
-    payAmountDisplay.innerText = `₹${total}`;
-    paymentModal.classList.add("active");
-});
-
-closePayment.addEventListener("click", () => {
-    paymentModal.classList.remove("active");
-});
-
 // ===== ORDER FIX =====
-confirmOrderBtn.addEventListener("click", async () => {
+async function placeOrder() {
 
-    const userLocation = await getLocationPromise();
-    const locationText = userLocation
-        ? `https://maps.google.com/?q=${userLocation}`
+    const loc = await getLocationPromise();
+
+    const locationText = loc
+        ? `https://maps.google.com/?q=${loc}`
         : "Location not provided";
 
+    let message = "NEW ORDER\n\n";
     let total = 0;
-    let waItemsString = "";
 
     Object.entries(cart).forEach(([id, qty]) => {
-        const product = products.find(p => p.id == id);
-        total += product.price * qty;
-        waItemsString += `${product.name} x ${qty}\n`;
+        const p = products.find(x => x.id == id);
+        total += p.price * qty;
+        message += `${p.name} x ${qty}\n`;
     });
 
-    const message = `NEW ORDER\n\n${waItemsString}\nTotal: ₹${total}\n\nLocation: ${locationText}`;
+    message += `\nTotal: ₹${total}\n\nLocation: ${locationText}`;
+
     const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
 
-    paymentModal.classList.remove("active");
+    // 🔥 FIX: works everywhere
+    window.location.href = waUrl;
+}
 
-    // 🔥 FIX: WORKS IN INSTAGRAM
-    setTimeout(() => {
-        window.location.href = waUrl;
-    }, 1000);
-});
+// ===== EVENTS =====
+if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", placeOrder);
+}
+
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        const q = searchInput.value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+        renderProducts(filtered);
+    });
+}
+
+if (locationTrigger) {
+    locationTrigger.addEventListener("click", fetchLocationUI);
+}
 
 // ===== INIT =====
-searchInput.addEventListener("input", filterProducts);
-locationTrigger.addEventListener("click", fetchLocationUI);
-
-renderCategoryBar();
 renderProducts(products);
 fetchLocationUI();
