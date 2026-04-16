@@ -8,12 +8,128 @@
     <meta name="theme-color" content="#ff5200">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
 
-    <link rel="stylesheet" href="./style.css?v=8">
+    <style>
+        /* ===== CSS STYLES ===== */
+        :root {
+            --primary: #ff5200;
+            --primary-light: #fff0e8;
+            --dark: #282c3f;
+            --text-muted: #686b78;
+            --bg-color: #f4f5f7;
+            --white: #ffffff;
+            --border: #e9ecee;
+            --success: #118a2e;
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-heavy: 0 -4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: system-ui, -apple-system, sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--dark); 
+            padding-top: 70px; 
+            padding-bottom: 90px; 
+        }
+
+        /* Header */
+        .app-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 64px; 
+            background: var(--white); display: flex; justify-content: space-between; 
+            align-items: center; padding: 0 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+            z-index: 100; 
+        }
+
+        .brand { display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--primary-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .logo-icon svg { width: 22px; height: 22px; }
+        .brand h1 { font-size: 1.25rem; font-weight: 800; color: var(--dark); }
+
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .icon-btn { position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark); }
+        .icon-btn svg { width: 24px; height: 24px; }
+        .cart-badge { position: absolute; top: -6px; right: -8px; background: var(--primary); color: var(--white); font-size: 0.7rem; font-weight: 800; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 2px; }
+
+        /* Hero & Inputs */
+        .hero { background: var(--white); padding: 16px; margin-bottom: 12px; }
+        .input-group { display: flex; align-items: center; background: var(--bg-color); border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; }
+        .input-group svg { width: 20px; height: 20px; margin-right: 12px; flex-shrink: 0; }
+        .input-group input { border: none; background: transparent; width: 100%; font-size: 0.95rem; outline: none; color: var(--dark); font-weight: 600; cursor: pointer; }
+        .search-group { margin-bottom: 0; background: var(--white); }
+        .search-group input { pointer-events: auto; font-weight: 500; cursor: text; }
+
+        /* Categories */
+        .category-section { padding: 0 16px; margin-bottom: 16px; }
+        .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .category-btn { background: var(--white); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: capitalize; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow-soft); transition: 0.2s; height: 38px; display: flex; align-items: center; }
+        .category-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+        /* Grid */
+        .menu-section { padding: 0 16px; }
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 768px) { .grid-container { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+
+        /* Cards */
+        .card { background: var(--white); border-radius: 12px; padding: 10px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; border: 1px solid var(--border); overflow: hidden; }
+        .card-img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--border); }
+        .card-info { display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; gap: 10px; }
+        .card-text { display: flex; flex-direction: column; gap: 4px; }
+        .card-title { font-size: 0.85rem; font-weight: 700; color: var(--dark); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-price { font-size: 0.95rem; color: var(--dark); font-weight: 800; }
+
+        /* Buttons */
+        .btn-wrapper { height: 36px; width: 100%; }
+        .btn-add { width: 100%; height: 100%; background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); border-radius: 8px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; }
+        .btn-qty { width: 100%; height: 100%; background: var(--primary); color: var(--white); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+        .btn-qty button { width: 35px; height: 100%; background: transparent; border: none; color: var(--white); font-size: 1.2rem; cursor: pointer; }
+        .btn-qty span { flex-grow: 1; text-align: center; font-size: 0.9rem; }
+
+        /* Bottom Cart */
+        .bottom-cart { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); padding: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-heavy); border-radius: 20px 20px 0 0; transform: translateY(120%); transition: transform 0.3s ease; z-index: 999; border-top: 1px solid var(--border); }
+        .bottom-cart.visible { transform: translateY(0); }
+        .cart-info { display: flex; flex-direction: column; }
+        #bottom-cart-items { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        #bottom-cart-total { font-size: 1.2rem; font-weight: 800; color: var(--dark); }
+
+        .order-btn { background: var(--primary); color: var(--white); border: none; border-radius: 12px; padding: 0 20px; height: 48px; font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 82, 0, 0.3); }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 2000; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--bg-color); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px 20px; transform: translateY(100%); transition: transform 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 1.2rem; font-weight: 800; }
+        .close-btn { font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; }
+
+        .amount-card { background: var(--white); padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border: 1px solid var(--border); }
+        .amount-card span { font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+        .amount-card strong { font-size: 1.4rem; color: var(--dark); font-weight: 800; }
+
+        .payment-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        .pay-option { display: flex; align-items: center; padding: 16px; border: 2px solid var(--primary); border-radius: 12px; background: var(--primary-light); cursor: pointer;}
+        .pay-option input { display: none; }
+        .pay-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 16px; }
+        .pay-label { font-weight: 700; font-size: 1rem; color: var(--dark); }
+
+        .action-btn { width: 100%; justify-content: center; height: 54px; font-size: 1.1rem; }
+
+        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--success); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--white); text-align: center; transform: translateY(100%); transition: transform 0.4s ease; }
+        .success-overlay.active { transform: translateY(0); }
+        .success-overlay .checkmark { font-size: 5rem; margin-bottom: 20px; }
+        .success-overlay h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+        .success-overlay p { font-size: 1rem; opacity: 0.9; }
+
+        .tap-effect:active { transform: scale(0.96); }
+    </style>
 </head>
 <body>
     <header class="app-header">
@@ -29,7 +145,7 @@
             <h1>ShakeToHome</h1>
         </div>
         <div class="header-actions">
-            <div class="icon-btn tap-effect" id="header-cart-btn">
+            <div class="icon-btn tap-effect">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 <span class="cart-badge" id="cart-badge">0</span>
             </div>
@@ -49,26 +165,30 @@
             </div>
         </section>
 
+        <!-- Dynamic Category Section -->
         <section class="category-section">
             <div class="category-scroll" id="category-bar"></div>
         </section>
 
+        <!-- Dynamic Menu Section -->
         <section class="menu-section">
             <div class="grid-container" id="product-grid"></div>
         </section>
     </main>
 
+    <!-- Bottom Cart Bar -->
     <div class="bottom-cart" id="bottom-cart">
         <div class="cart-info">
-            <span id="bottom-cart-items">1 item</span>
+            <span id="bottom-cart-items">0 items</span>
             <span id="bottom-cart-total">₹0</span>
         </div>
         <button class="order-btn tap-effect" id="checkout-btn">
             Checkout
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
     </div>
 
+    <!-- Payment Modal -->
     <div class="modal-overlay" id="payment-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,12 +217,246 @@
         </div>
     </div>
 
+    <!-- Success Overlay -->
     <div class="success-overlay" id="success-overlay">
         <div class="checkmark">✅</div>
         <h2>Order Placed!</h2>
         <p>Connecting to WhatsApp...</p>
     </div>
 
-    <script type="module" src="./script.js?v=8"></script>
+    <!-- JavaScript - No External Libraries Needed -->
+    <script>
+        // ===== PRODUCTS =====
+        const products = [
+            { id: 1, name: "Oreo Shake", price: 120, category: "milkshakes", img: "Oero.jpeg" },
+            { id: 2, name: "KitKat Shake", price: 120, category: "milkshakes", img: "kitkatshake.jpg" },
+            { id: 3, name: "Strawberry Shake", price: 120, category: "milkshakes", img: "strawberry shake.jpg" },
+            { id: 4, name: "Chocolate Shake", price: 120, category: "milkshakes", img: "chocolate shake.jpeg" },
+            { id: 5, name: "Black Current", price: 120, category: "milkshakes", img: "chocolate.jpg" },
+            { id: 6, name: "Pineapple Juice", price: 60, category: "juices", img: "pineapple.jpeg" },
+            { id: 7, name: "Karbuja Juice", price: 60, category: "juices", img: "muskmelon.jpeg" },
+            { id: 8, name: "Watermelon Juice", price: 60, category: "juices", img: "watermelon juice.jpeg" },
+            { id: 9, name: "Grapes Juice", price: 60, category: "juices", img: "grape juice.jpeg" },
+            { id: 10, name: "Butterscotch Cake", price: 300, category: "cakes", img: "butterscotch cake.jpeg" },
+            { id: 11, name: "Pineapple Cake", price: 300, category: "cakes", img: "pineapple cake.jpeg" },
+            { id: 12, name: "Black Forest", price: 300, category: "cakes", img: "black forest.jpeg" },
+            { id: 13, name: "Egg Puff", price: 30, category: "puff", img: "egg puff.jpeg" },
+            { id: 14, name: "Curry Puff", price: 30, category: "puff", img: "veg puff.jpeg" },
+            { id: 15, name: "Chicken Puff", price: 30, category: "puff", img: "chicken puff.jpeg" },
+            { id: 16, name: "Chicken Dum Biryani", price: 200, category: "biryani", img: "biryani.jpeg" },
+            { id: 17, name: "Blue Mojito", price: 80, category: "mojito", img: "blue mojito.jpeg" },
+            { id: 18, name: "Lime Mojito", price: 80, category: "mojito", img: "lime mojito.jpeg" },
+            { id: 19, name: "Watermelon Mojito", price: 80, category: "mojito", img: "watermelon mojito.jpeg" },
+            { id: 20, name: "Strawberry Mojito", price: 80, category: "mojito", img: "strawberry mojito.jpeg" }
+        ];
+
+        // ===== STATE =====
+        let cart = {};
+        let currentCategory = "all";
+        const WA_NUMBER = "917702622925";
+
+        // ===== DOM ELEMENTS =====
+        const gridContainer = document.getElementById("product-grid");
+        const categoryBar = document.getElementById("category-bar");
+        const searchInput = document.getElementById("search-input");
+        const locationInput = document.getElementById("location-input");
+        const locationTrigger = document.getElementById("location-trigger");
+        
+        const bottomCart = document.getElementById("bottom-cart");
+        const cartBadge = document.getElementById("cart-badge");
+        
+        const checkoutBtn = document.getElementById("checkout-btn");
+        const paymentModal = document.getElementById("payment-modal");
+        const closePaymentBtn = document.getElementById("close-payment");
+        const confirmOrderBtn = document.getElementById("confirm-order-btn");
+        const successOverlay = document.getElementById("success-overlay");
+
+        // ===== INITIALIZATION =====
+        function init() {
+            renderCategories();
+            renderProducts(products);
+            fetchLocationUI();
+        }
+
+        // ===== RENDER CATEGORIES =====
+        function renderCategories() {
+            const categories = ["all", ...new Set(products.map(p => p.category))];
+            categoryBar.innerHTML = "";
+            
+            categories.forEach(cat => {
+                const btn = document.createElement("button");
+                btn.className = `category-btn tap-effect ${currentCategory === cat ? 'active' : ''}`;
+                btn.innerText = cat;
+                btn.onclick = () => {
+                    currentCategory = cat;
+                    renderCategories(); // Re-render to update 'active' class
+                    filterProducts();
+                };
+                categoryBar.appendChild(btn);
+            });
+        }
+
+        // ===== FILTER & RENDER PRODUCTS =====
+        function filterProducts() {
+            const q = searchInput.value.toLowerCase();
+            let filtered = products;
+
+            if (currentCategory !== "all") {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+            if (q) {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
+            }
+            
+            renderProducts(filtered);
+        }
+
+        function renderProducts(items) {
+            gridContainer.innerHTML = "";
+
+            if (items.length === 0) {
+                gridContainer.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:gray;'>No items found.</p>";
+                return;
+            }
+
+            items.forEach(product => {
+                const qty = cart[product.id] || 0;
+                const card = document.createElement("div");
+                card.className = "card";
+
+                // Added an onerror fallback for images to prevent broken layout
+                card.innerHTML = `
+                    <img src="${product.img}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'" class="card-img">
+                    <div class="card-info">
+                        <div class="card-text">
+                            <div class="card-title">${product.name}</div>
+                            <div class="card-price">₹${product.price}</div>
+                        </div>
+                        <div class="btn-wrapper">
+                            ${qty === 0 
+                                ? `<button class="btn-add tap-effect" onclick="updateCart(${product.id},1)">ADD</button>` 
+                                : `<div class="btn-qty">
+                                    <button class="tap-effect" onclick="updateCart(${product.id},-1)">-</button>
+                                    <span>${qty}</span>
+                                    <button class="tap-effect" onclick="updateCart(${product.id},1)">+</button>
+                                   </div>`
+                            }
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // ===== CART LOGIC =====
+        window.updateCart = function(id, delta) {
+            if (!cart[id]) cart[id] = 0;
+            cart[id] += delta;
+            if (cart[id] <= 0) delete cart[id];
+
+            filterProducts(); // Re-render keeping search/category intact
+            updateCartUI();
+        };
+
+        function updateCartUI() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            Object.entries(cart).forEach(([id, qty]) => {
+                totalItems += qty;
+                const p = products.find(x => x.id == id);
+                if (p) totalPrice += p.price * qty;
+            });
+
+            cartBadge.innerText = totalItems;
+
+            if (totalItems > 0) {
+                bottomCart.classList.add("visible");
+                document.getElementById("bottom-cart-items").innerText = `${totalItems} ITEM${totalItems > 1 ? 'S' : ''}`;
+                document.getElementById("bottom-cart-total").innerText = `₹${totalPrice}`;
+                document.getElementById("pay-amount-display").innerText = `₹${totalPrice}`;
+            } else {
+                bottomCart.classList.remove("visible");
+                paymentModal.classList.remove("active"); // Hide modal if cart emptied
+            }
+        }
+
+        // ===== LOCATION LOGIC (Safely Handled) =====
+        function getLocationPromise() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) {
+                    resolve(null);
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve(`${pos.coords.latitude},${pos.coords.longitude}`),
+                    () => resolve(null),
+                    { timeout: 5000 } // Shortened timeout to prevent hang
+                );
+            });
+        }
+
+        async function fetchLocationUI() {
+            locationInput.value = "Detecting location...";
+            const loc = await getLocationPromise();
+            locationInput.value = loc ? "📍 Location detected" : "Enter location manually";
+        }
+
+        // ===== MODAL & ORDER LOGIC =====
+        checkoutBtn.addEventListener("click", () => {
+            paymentModal.classList.add("active");
+        });
+
+        closePaymentBtn.addEventListener("click", () => {
+            paymentModal.classList.remove("active");
+        });
+
+        // Search event listener
+        searchInput.addEventListener("input", filterProducts);
+        locationTrigger.addEventListener("click", fetchLocationUI);
+
+        // Confirm Order and send to WhatsApp
+        confirmOrderBtn.addEventListener("click", async () => {
+            // Show Success UI instantly
+            paymentModal.classList.remove("active");
+            successOverlay.classList.add("active");
+
+            // Prepare WhatsApp String
+            const loc = await getLocationPromise();
+            const locationText = loc ? `https://maps.google.com/?q=${loc}` : "Location not provided";
+            
+            let message = "🛒 *NEW ORDER*\n\n";
+            let total = 0;
+
+            Object.entries(cart).forEach(([id, qty]) => {
+                const p = products.find(x => x.id == id);
+                total += p.price * qty;
+                message += `▪️ ${p.name} x ${qty}\n`;
+            });
+
+            message += `\n💰 *Total: ₹${total}*\n📍 *Location:* ${locationText}\n💵 *Payment:* Cash on Delivery`;
+
+            // Using api.whatsapp.com bypasses Instagram browser restrictions better than wa.me
+            const waUrl = `https://api.whatsapp.com/send?phone=${WA_NUMBER}&text=${encodeURIComponent(message)}`;
+
+            // Delay redirect slightly for UI experience
+            setTimeout(() => {
+                successOverlay.classList.remove("active");
+                
+                // Instagram/Facebook browser FIX: Use an explicit anchor tag click
+                const link = document.createElement('a');
+                link.href = waUrl;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+            }, 1500);
+        });
+
+        // Run application
+        init();
+
+    </script>
 </body>
 </html>
